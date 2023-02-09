@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing</title>
+</head>
+<body>
+    <style>
+        .square {
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          border-radius:100%;
+          background-color: blue;
+        }
+      </style>
+      
+      <script>
+        var maxSpeed = 50;
+        var maxSquares = 100;
+        var squareCount = 0;
+      
+        function createSquare() {
+          if (squareCount >= maxSquares) {
+            return;
+          }
+          squareCount++;
+      
+          var square = document.createElement('div');
+          square.classList.add('square');
+          document.body.appendChild(square);
+          
+          var speed = 5;
+          var angle = 45;
+          var x = Math.random() * (window.innerWidth - 50);
+          var y = Math.random() * (window.innerHeight - 50);
+          
+          setInterval(function() {
+            x += speed * Math.cos(angle * Math.PI / 180);
+            y += speed * Math.sin(angle * Math.PI / 180);
+            
+            if (x + 50 > window.innerWidth || x < 0) {
+              angle = 180 - angle + (Math.random() * 90 - 45);
+              speed *= 1.05;
+              speed = Math.min(speed, maxSpeed);
+              if (x + 50 > window.innerWidth) {
+                x = window.innerWidth - 50;
+              }
+              if (x < 0) {
+                x = 0;
+              }
+              createSquare();
+            }
+            
+            if (y + 50 > window.innerHeight || y < 0) {
+              angle = 360 - angle + (Math.random() * 90 - 45);
+              speed *= 1.05;
+              speed = Math.min(speed, maxSpeed);
+              if (y + 50 > window.innerHeight) {
+                y = window.innerHeight - 50;
+              }
+              if (y < 0) {
+                y = 0;
+              }
+              createSquare();
+            }
+            
+            square.style.left = x + 'px';
+            square.style.top = y + 'px';
+          }, 20);
+        }
+        var spaceBarDown = false;
+
+document.addEventListener("keydown", function(event) {
+  if (event.code === "Space") {
+    spaceBarDown = true;
+    changeColorOfEverything();
+  }
+});
+
+document.addEventListener("keyup", function(event) {
+  if (event.code === "Space") {
+    spaceBarDown = false;
+    changeColorOfEverything("blue");
+  }
+});
+
+function changeColorOfEverything(color) {
+  // Get all div elements on the page
+  var divElements = document.getElementsByTagName("div");
+
+  // Loop through each div element and change its background color
+  for (var i = 0; i < divElements.length; i++) {
+    if (spaceBarDown && color === undefined) {
+      // Generate a random RGB color
+      var r = Math.floor(Math.random() * 256);
+      var g = Math.floor(Math.random() * 256);
+      var b = Math.floor(Math.random() * 256);
+
+      divElements[i].style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+    } else {
+      divElements[i].style.backgroundColor = color || "blue";
+    }
+  }
+}
+
+        // This line breaks from the endless methods to where they are actually called -----------------------------------------------------
+        
+        createSquare();
+      </script>      
+      
+</body>
+</html>

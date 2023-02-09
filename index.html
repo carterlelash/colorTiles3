@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Draw</title>
     <style>
+    body {
+        background-color:black;
+    }
     .square {
         background-color: black;
         border: none;
@@ -22,15 +25,56 @@
         grid-template-rows: 20px;   
         grid-gap: 0px;
     }
+    #buttonsDiv {
+        background-color:blue;
+        height:50px;
+        align-items:center;
+        width:auto;
+        display:flex;
+        justify-content: space-evenly;
+    }
+    #goToAimGame {
+        height:40px;
+        width:100px;
+        border-radius:25%;
+        background-color:green;
+        color:white;
+        z-index:1;
+    }
+    #goToMoveCubes {
+        height:40px;
+        width:100px;
+        border-radius:25%;
+        background-color:red;
+        color:white;
+        z-index:1;
+    }
+    #appTitle {
+        color:black;
+        background-color:yellow;
+        width:fit-content;
+        height:fit-content;
+    }
     </style>
 </head>
 <body>
+    <div id = "buttonsDiv">
+        <button id = "goToAimGame" onclick="window.location.href='second.html'">Go to Aim Game</button>
+        <h1 id = "appTitle">Game Thing</h1>
+        <button id = "goToMoveCubes" onclick="window.location.href='third.html'">Go to Move Cubes</button>
+    </div>
     <div id="tileDiv"></div>
+   
+   
     <script>
     var totalTiles = 0;
     const tiles = [];
     var freeze = false;
 
+
+    function makeNoise() {
+        console.log(`Some button is working! Excellent!`);
+    }
     function makeDivs(number) {
         for (let i = 0; i < number; i++) {
             // Create a new div element
@@ -59,22 +103,14 @@
         event.target.style.color = `rgb(${R1},${G1},${B1})`
     }
     function toggle(event) {
-        if(event.target.style.backgroundColor == "black"){
-            event.target.removeEventListener("mouseover",() => {changeColor(event)});
-            event.target.removeEventListener("mouseout",() => {changeColor(event)});
-            event.target.style.backgroundColor = "white";
-        }else{
-            event.target.addEventListener("mouseover",() => {changeColor(event)});
-            event.target.addEventListener("mouseout",() => {changeColor(event)});
-            event.target.style.backgroundColor = "black";
-        }
+    event.target.removeEventListener("mouseover", changeColor);
+    event.target.removeEventListener("mouseout", changeColor);
+    if (event.target.style.backgroundColor !== "black") {
+        event.target.style.backgroundColor = "black";
+    } else {
+        event.target.addEventListener("mouseover", changeColor);
+        event.target.addEventListener("mouseout", changeColor);
     }
-    function freezeColors(){
-        if(freeze){
-            freeze = false;
-        }else{
-            freeze = true;
-        }
     }
     function resetDivs() {
     for (let i = 0; i < totalTiles; i++) {
@@ -124,9 +160,10 @@ function toggleSquare(event) {
     function resetTile(event) {
         event.target.style.background = "black";
     }
+    
+    makeDivs(2840);
     document.addEventListener("keydown", freezeSquares);
     document.addEventListener("keydown", resetSquares);
-    makeDivs(2840); //each row is 71 tiles
     </script>
 </body>
 </html>
