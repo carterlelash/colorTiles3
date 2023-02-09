@@ -36,6 +36,43 @@
         width:fit-content;
         height:fit-content;
     }
+    .square {
+    position: absolute;
+    background-color: blue;
+  }
+  #scorecard {
+      background-color:blue;
+      display:flex;
+      position:relative;
+      height:50px;
+      width:200px;
+      align-items: center;
+      justify-content: space-evenly;
+  }
+  #score {
+      background-color:black;
+      color:red;
+      height:fit-content;
+      width:fit-content;
+  }
+  #timer {
+      background-color:yellow;
+      color:black;
+      height:fit-content;
+      width:fit-content;
+  }
+  #finalScoreCard {
+      position:absolute;
+      text-align:center;
+      background-color:black;
+      color:white;
+      visibility: hidden;
+      width:100px;
+      height:100px;
+      top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
     </style>
 </head>
 <body>
@@ -44,15 +81,24 @@
         <h1 id = "appTitle">Game Thing</h1>
         <button id = "goToMoveCubes" onclick="window.location.href='third.html'">Go to Move Cubes</button>
     </div>
-    <div id = "block"></div>
+    <div id = "scorecard">
+        <div id = "score">Score: 0</div>
+        <div id = "timer">Time Remaining: 60</div>
+    </div>
+    <div class = "square" id = "block"></div>
+    <div id = "finalScoreCard">
+        <p>You Win!</p>
+        <p>Final Score: </p>
+        <p>Refresh page to restart!</p>
+    </div>
     <style>
         body {
             border-width:5px;
             border-color:black;
         }
         #block {
-            width:30px;
-            height:30px;
+            width:150px;
+            height:150px;
             background-color:black;
             position:absolute;
         }
@@ -151,9 +197,120 @@ function relocateDivWithTimer(div) {
   });
 }
 
+  var cube = document.querySelector('.square');
+  var speed = 1;
+  var angle = 45;
+  var x = 0;
+  var y = 0;
+  var maxSpeed = 500;
+  
+  setInterval(function() {
+    x += speed * Math.cos(angle * Math.PI / 180);
+    y += speed * Math.sin(angle * Math.PI / 180);
+    
+    if (x + 50 > window.innerWidth || x < 0) {
+      angle = 180 - angle + (Math.random() * 90 - 45);
+      //speed *= 1.05;
+      //speed = Math.min(speed, maxSpeed);
+      if (x + 50 > window.innerWidth) {
+        x = window.innerWidth - 50;
+      }
+      if (x < 0) {
+        x = 0;
+      }
+    }
+    
+    if (y + 50 > window.innerHeight || y < 0) {
+      angle = 360 - angle + (Math.random() * 90 - 45);
+      //speed *= 1.05;
+      //speed = Math.min(speed, maxSpeed);
+      if (y + 50 > window.innerHeight) {
+        y = window.innerHeight - 50;
+      }
+      if (y < 0) {
+        y = 0;
+      }
+    }
+    
+    cube.style.left = x + 'px';
+    cube.style.top = y + 'px';
+  }, 10);
 
-    square.addEventListener("click",() => {relocateDiv(square)});
-    changeColorB(document.body);
+  var score = 0;
+
+//   square.addEventListener("click", () => {
+//         addScore();
+//         console.log("clicked!");
+//     })
+
+    var heightValue = 150;
+    var widthValue = 150;
+
+    function addScore() {
+        score ++;
+        document.getElementById("score").innerHTML = `Score: ${score}`; 
+        speed += 0.3
+        heightValue -= 1;
+        widthValue -= 1;
+        document.getElementById("block").style.height =  heightValue + 'px';
+        document.getElementById("block").style.width = widthValue + 'px';      
+        console.log(speed);
+        if (score >= 100) {
+            endGame();
+        }  
+    }
+
+    function endGame() {
+        square.removeEventListener("mouseenter", function() {
+            console.log("entered");
+            intervalId = setInterval(function() {
+                addScore();
+            }, 100);
+            });
+
+        square.removeEventListener("mouseleave", function() {
+            console.log("left");
+            clearInterval(intervalId);
+        });
+        document.getElementById("block").remove();
+        document.getElementById("finalScoreCard").innerHTML = `Final Score: ${score}`
+        document.getElementById("finalScoreCard").style.visibility = "visible";
+        score = 0;
+        document.getElementById("scorecard").innerHTML = "Score: 0";
+    }
+    var intervalId1;
+    var timeLeft = 60;
+
+intervalId1 = setInterval(function() {
+  if (timeLeft === 0) {
+    endGame();
+    clearInterval(intervalId1);
+  } else {
+    timeLeft--;
+    document.getElementById("timer").innerHTML = `Time Remaining: ${timeLeft}`
+  }
+}, 1000);
+
+
+    var intervalId;
+
+    square.addEventListener("mouseenter", function() {
+        console.log("entered");
+        intervalId = setInterval(function() {
+            addScore();
+        }, 10);
+        });
+
+    square.addEventListener("mouseleave", function() {
+        console.log("left");
+        clearInterval(intervalId);
+    });
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    //square.addEventListener("click",() => {relocateDiv(square)});
+    changeColor(document.body);
     changeColorABit(square);
     relocateDivWithTimer(square);
     </script>
