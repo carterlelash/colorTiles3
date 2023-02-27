@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testing</title>
+    <title>Bouncing Balls</title>
 </head>
 <body>
     <style>
@@ -15,7 +15,42 @@
           border-radius:100%;
           background-color: blue;
         }
+        #buttonsDiv {
+        background-color:blue;
+        height:50px;
+        align-items:center;
+        width:auto;
+        display:flex;
+        justify-content: space-evenly;
+    }
+    #goToAimGame {
+        height:40px;
+        width:100px;
+        border-radius:25%;
+        background-color:green;
+        color:white;
+        z-index:1;
+    }
+    #goToFreeDraw {
+        height:40px;
+        width:100px;
+        border-radius:25%;
+        background-color:red;
+        color:white;
+        z-index:1;
+    }
+    #appTitle {
+        color:black;
+        background-color:yellow;
+        width:fit-content;
+        height:fit-content;
+    }
       </style>
+      <div id = "buttonsDiv">
+        <button id = "goToAimGame" onclick="window.location.href='/colorTiles3/second.html'">Go to Aim Game</button>
+        <h1 id = "appTitle">Game Thing</h1>
+        <button id = "goToFreeDraw" onclick="window.location.href='/colorTiles3/index.html'">Go to Free Draw</button>
+    </div>
       
       <script>
         var maxSpeed = 50;
