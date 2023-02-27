@@ -30,6 +30,14 @@ const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html');
     readStream.pipe(res);
   } 
+  else if (req.url === '/index.html') {
+    const filePath = path.join(__dirname, 'index.html');
+    const readStream = fs.createReadStream(filePath);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    readStream.pipe(res);
+  } 
   // handle all other requests
   else {
     res.statusCode = 404;
